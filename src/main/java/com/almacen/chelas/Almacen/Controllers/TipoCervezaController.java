@@ -12,6 +12,8 @@ import java.net.URI;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin("http://localhost:3000/")
+
 @RequestMapping("/tipoCerveza")
 public class TipoCervezaController {
 
