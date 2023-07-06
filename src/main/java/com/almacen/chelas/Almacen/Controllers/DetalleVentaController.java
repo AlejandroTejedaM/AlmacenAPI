@@ -42,7 +42,7 @@ public class DetalleVentaController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody DetalleVenta newDetalleVenta, UriComponentsBuilder UriCmpBuilder) {
+    public ResponseEntity<DetalleVenta> create(@RequestBody DetalleVenta newDetalleVenta, UriComponentsBuilder UriCmpBuilder) {
         Optional<Venta> ventaOptional = ventaRepository.findById(newDetalleVenta.getVenta().getVentaId());
         if (!ventaOptional.isPresent()) {
             return ResponseEntity.unprocessableEntity().build();
@@ -60,7 +60,7 @@ public class DetalleVentaController {
                 .path("detalleVenta/{detalleVentaId}")
                 .buildAndExpand(saveDetalleVenta.getDetalleVentaId())
                 .toUri();
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(uri).body(saveDetalleVenta);
     }
 
     @PutMapping("/{detalleVentaId}")

@@ -1,5 +1,6 @@
 package com.almacen.chelas.Almacen.Controllers;
 
+import com.almacen.chelas.Almacen.Models.Producto;
 import com.almacen.chelas.Almacen.Models.TipoCerveza;
 import com.almacen.chelas.Almacen.Repositories.TipoCervezaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,12 +45,13 @@ public class TipoCervezaController {
 
     @PutMapping("/{tipoCervezaId}")
     public ResponseEntity<Void> update(@PathVariable Integer tipoCervezaId, @RequestBody TipoCerveza TipoCervezaAct) {
-        Optional<TipoCerveza> tipoCervezaOptional = tipoCervezaRepository.findById(TipoCervezaAct.getTipoCervezaId());
-        if (!tipoCervezaOptional.isPresent()) {
-            return ResponseEntity.unprocessableEntity().build();
-        } else {
-            return ResponseEntity.notFound().build();
+        Optional<TipoCerveza> tipoCervezaAnterior = tipoCervezaRepository.findById(tipoCervezaId);
+        if (tipoCervezaAnterior != null) {
+            TipoCervezaAct.setTipoCervezaId(tipoCervezaAnterior.get().getTipoCervezaId());
+            tipoCervezaRepository.save(TipoCervezaAct);
+            return ResponseEntity.noContent().build();
         }
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{tipoCervezaId}")

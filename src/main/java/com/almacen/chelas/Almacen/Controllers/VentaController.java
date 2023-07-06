@@ -42,7 +42,7 @@ public class VentaController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody Venta newVenta, UriComponentsBuilder UriCmpBuilder) {
+    public ResponseEntity<Venta> create(@RequestBody Venta newVenta, UriComponentsBuilder UriCmpBuilder) {
 
         Optional<Cajero> cajeroOptional = cajeroRepository.findById(newVenta.getCajero().getCajeroId());
         if (!cajeroOptional.isPresent()) {
@@ -54,7 +54,7 @@ public class VentaController {
                 .path("venta/{ventaId}")
                 .buildAndExpand(savedVenta.getVentaId())
                 .toUri();
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(uri).body(savedVenta);
     }
 
     @PutMapping("/{ventaId}")

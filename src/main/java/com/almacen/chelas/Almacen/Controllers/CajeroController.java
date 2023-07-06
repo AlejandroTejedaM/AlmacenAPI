@@ -1,6 +1,7 @@
 package com.almacen.chelas.Almacen.Controllers;
 
 import com.almacen.chelas.Almacen.Models.Cajero;
+import com.almacen.chelas.Almacen.Models.TipoCerveza;
 import com.almacen.chelas.Almacen.Models.Venta;
 import com.almacen.chelas.Almacen.Repositories.CajeroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +46,11 @@ public class CajeroController {
 
     @PutMapping("/{cajeroId}")
     public ResponseEntity<Void> update(@PathVariable Integer CajeroId, @RequestBody Cajero cajeroAct) {
-        Optional<Cajero> CajeroOptional = cajeroRepository.findById(cajeroAct.getCajeroId());
-        if (!CajeroOptional.isPresent()) {
-            return ResponseEntity.unprocessableEntity().build();
+        Optional<Cajero> cajeroAnterior = cajeroRepository.findById(CajeroId);
+        if (cajeroAnterior != null) {
+            cajeroAct.setCajeroId(cajeroAnterior.get().getCajeroId());
+            cajeroRepository.save(cajeroAct);
+            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
     }
