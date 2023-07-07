@@ -45,15 +45,15 @@ public class TipoCervezaController {
 
     @PutMapping("/{tipoCervezaId}")
     public ResponseEntity<Void> update(@PathVariable Integer tipoCervezaId, @RequestBody TipoCerveza TipoCervezaAct) {
-        Optional<TipoCerveza> tipoCervezaAnterior = tipoCervezaRepository.findById(tipoCervezaId);
-        if (tipoCervezaAnterior != null) {
-            TipoCervezaAct.setTipoCervezaId(tipoCervezaAnterior.get().getTipoCervezaId());
+        Optional<TipoCerveza> tipoCervezaOptional = tipoCervezaRepository.findById(tipoCervezaId);
+        if (tipoCervezaOptional.isPresent()) {
+            TipoCervezaAct.setTipoCervezaId(tipoCervezaOptional.get().getTipoCervezaId());
             tipoCervezaRepository.save(TipoCervezaAct);
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
     }
-
+    
     @DeleteMapping("/{tipoCervezaId}")
     public ResponseEntity<Void> delete(@PathVariable Integer tipoCervezaId) {
         if (tipoCervezaRepository.findById(tipoCervezaId).get() == null) {
