@@ -45,8 +45,8 @@ public class CajeroController {
     }
 
     @PutMapping("/{cajeroId}")
-    public ResponseEntity<Void> update(@PathVariable Integer CajeroId, @RequestBody Cajero cajeroAct) {
-        Optional<Cajero> cajeroAnterior = cajeroRepository.findById(CajeroId);
+    public ResponseEntity<Void> update(@PathVariable Integer cajeroId, @RequestBody Cajero cajeroAct) {
+        Optional<Cajero> cajeroAnterior = cajeroRepository.findById(cajeroId);
         if (cajeroAnterior != null) {
             cajeroAct.setCajeroId(cajeroAnterior.get().getCajeroId());
             cajeroRepository.save(cajeroAct);
@@ -56,11 +56,11 @@ public class CajeroController {
     }
 
     @DeleteMapping("/{cajeroId}")
-    public ResponseEntity<Void> delete(@PathVariable Integer clienteId) {
-        if (cajeroRepository.findById(clienteId).get() == null) {
+    public ResponseEntity<Void> delete(@PathVariable Integer cajeroId) {
+        if (cajeroRepository.findById(cajeroId).get() == null) {
             return ResponseEntity.notFound().build();
         }
-        cajeroRepository.deleteById(clienteId);
+        cajeroRepository.deleteById(cajeroId);
         return ResponseEntity.noContent().build();
     }
 }
